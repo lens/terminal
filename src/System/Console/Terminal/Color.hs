@@ -20,6 +20,7 @@ module System.Console.Terminal.Color
 import Control.Applicative
 import Control.Lens
 import Data.Ix
+import System.Console.Terminal.Util
 
 #ifdef USE_TERMINFO
 import qualified System.Console.Terminfo.Color as Terminfo
@@ -39,12 +40,6 @@ data Color
   | Cyan
   | White
   deriving (Eq,Ord,Show,Read,Ix,Enum,Bounded)
-
-eq :: Eq a => a -> Prism' a ()
-eq a = prism' (const a) $ \b -> if a == b then Just () else Nothing
-
-en :: Enum a => a -> Prism' a ()
-en a = prism' (const a) $ \b -> if fromEnum a == fromEnum b then Just () else Nothing
 
 class AsColor p f t where
   -- |
