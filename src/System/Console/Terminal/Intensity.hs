@@ -27,10 +27,7 @@ import Data.Data
 import Data.Ix
 import GHC.Generics
 import System.Console.Terminal.Util
-
-#ifdef USE_ANSI
 import qualified System.Console.ANSI as ANSI
-#endif
 
 data Intensity
   = Dull
@@ -61,7 +58,6 @@ class AsIntensity p f t where
 instance AsIntensity p f Intensity where
   _Intensity = id
 
-#ifdef USE_ANSI
 instance (Profunctor p, Functor f) => AsIntensity p f ANSI.ColorIntensity where
   _Intensity = iso sa bt where
     bt Dull  = ANSI.Dull
@@ -73,5 +69,3 @@ instance (Profunctor p, Functor f) => AsIntensity p f ANSI.ColorIntensity where
 
 instance HasIntensity ANSI.ColorIntensity where
   intensity = _Intensity
-
-#endif

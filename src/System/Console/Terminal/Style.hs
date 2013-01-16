@@ -19,6 +19,7 @@ module System.Console.Terminal.Style
   ) where
 
 import Control.Lens
+import Data.Default
 import System.Console.Terminal.Color.Intense
 
 data Style = Style
@@ -31,3 +32,6 @@ data Style = Style
   }
 
 makeClassy ''Style
+
+instance Default Style where
+  def = Style Nothing Nothing False False False False

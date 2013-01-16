@@ -27,13 +27,10 @@ import Data.Ix
 import Data.Data
 import GHC.Generics
 import System.Console.Terminal.Util
+import qualified System.Console.ANSI as ANSI
 
 #ifdef USE_TERMINFO
 import qualified System.Console.Terminfo.Color as Terminfo
-#endif
-
-#ifdef USE_ANSI
-import qualified System.Console.ANSI as ANSI
 #endif
 
 data Color
@@ -108,7 +105,6 @@ instance (Choice p, Applicative f) => AsColor p f Terminfo.Color where
   _White   = eq Terminfo.White
 #endif
 
-#ifdef USE_ANSI
 instance (Profunctor p, Functor f) => AsColor p f ANSI.Color where
   _Color = iso sa bt where
     bt Black   = ANSI.Black
@@ -138,5 +134,3 @@ instance (Profunctor p, Functor f) => AsColor p f ANSI.Color where
 
 instance HasColor ANSI.Color where
   color = _Color
-#endif
-

@@ -18,7 +18,8 @@ import System.Console.Terminal.Bell
 import System.Console.Terminal.Style
 
 class MonadIO m => MonadTerminal m where
-  setTitle :: String -> m ()
+  setTitle  :: String -> m ()
   withStyle :: StateT Style IO a -> m a
-  emit :: String -> m ()
-  ring :: Bell -> m ()
+  emit      :: String -> m ()
+  emitLn    :: String -> m ()
+  ring      :: Bell -> m ()

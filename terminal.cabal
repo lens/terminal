@@ -40,6 +40,7 @@ source-repository head
 library
   build-depends:
     base         >= 4.4 && < 5,
+    data-default >= 0.4 && < 0.5,
     ghc-prim,
     lens         >= 3.8,
     mtl          >= 2     && < 2.2,
@@ -56,9 +57,9 @@ library
     cpp-options: -DUSE_TERMINFO
     build-depends: terminfo >= 0.3.2 && < 0.4
 
-  if flag(ansi)
-    cpp-options: -DUSE_ANSI
-    build-depends: ansi-terminal >= 0.5.5.1 && < 0.6
+  build-depends: ansi-terminal >= 0.5.5.1 && < 0.6
+  exposed-modules:
+    System.Console.Terminal.Backend.ANSI
 
   hs-source-dirs: src
   exposed-modules:
