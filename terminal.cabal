@@ -26,7 +26,11 @@ extra-source-files:
   travis/config
 
 flag terminfo
-  description: Use terminfo on POSIX platforms
+  description: Enable terminfo on POSIX platforms
+  default: True
+
+flag ansi
+  description: Enable ANSI on POSIX platforms
   default: True
 
 source-repository head
@@ -46,8 +50,12 @@ library
     cpp-options: -DUNIX
 
   if flag(terminfo)
-    cpp-options: -DTERMINFO
+    cpp-options: -DUSE_TERMINFO
     build-depends: terminfo >= 0.3.2 && < 0.4
+
+  if flag(ansi)
+    cpp-options: -DUSE_ANSI
+    build-depends: ansi-terminal >= 0.5.5.1 && < 0.6
 
   hs-source-dirs: src
   exposed-modules:

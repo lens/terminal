@@ -1,4 +1,6 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  System.Console.Terminal.Color
@@ -15,10 +17,16 @@ module System.Console.Terminal.Color
   , AsColor(..)
   ) where
 
+import Control.Applicative
 import Control.Lens
 import Data.Ix
-#ifdef TERMINFO
+
+#ifdef USE_TERMINFO
 import qualified System.Console.Terminfo.Color as Terminfo
+#endif
+
+#ifdef USE_ANSI
+import qualified System.Console.ANSI as ANSI
 #endif
 
 data Color
@@ -35,10 +43,25 @@ data Color
 eq :: Eq a => a -> Prism' a ()
 eq a = prism' (const a) $ \b -> if a == b then Just () else Nothing
 
-class AsColor t where
-  _Color :: Prism' t Color
+en :: Enum a => a -> Prism' a ()
+en a = prism' (const a) $ \b -> if fromEnum a == fromEnum b then Just () else Nothing
 
-  _Black, _Red, _Green, _Yellow, _Blue, _Magenta, _Cyan, _White :: Prism' t ()
+class AsColor p f t where
+  -- |
+  -- @
+  -- '_Color' :: 'Equality'' 'Color' 'Color'
+  -- '_Color' :: 'Iso''      'ANSI.Color' 'Color'
+  -- '_Color' :: 'Prism''    'Terminfo.Color' 'Color'
+  -- @
+  _Color :: Overloaded' p f t Color
+
+  -- |
+  -- @
+  -- '_Black' :: 'Prism'' 'Color' ()
+  -- '_Red'   :: 'Prism'' 'Color' ()
+  -- ...
+  -- @
+  _Black, _Red, _Green, _Yellow, _Blue, _Magenta, _Cyan, _White :: (Choice p, Applicative f) => Overloaded' p f t ()
 
   _Black   = _Color.eq Black
   _Red     = _Color.eq Red
@@ -49,11 +72,11 @@ class AsColor t where
   _Cyan    = _Color.eq Cyan
   _White   = _Color.eq White
 
-instance AsColor Color where
+instance AsColor p f Color where
   _Color = id
 
-#ifdef TERMINFO
-instance AsColor Terminfo.Color where
+#ifdef USE_TERMINFO
+instance (Choice p, Applicative f) => AsColor p f Terminfo.Color where
   _Color = prism' bt seta where
     bt Black   = Terminfo.Black
     bt Red     = Terminfo.Red
@@ -72,4 +95,42 @@ instance AsColor Terminfo.Color where
     seta Terminfo.Cyan          = Just Cyan
     seta Terminfo.White         = Just White
     seta Terminfo.ColorNumber{} = Nothing
+  _Black   = eq Terminfo.Black
+  _Red     = eq Terminfo.Red
+  _Green   = eq Terminfo.Green
+  _Yellow  = eq Terminfo.Yellow
+  _Blue    = eq Terminfo.Blue
+  _Magenta = eq Terminfo.Magenta
+  _Cyan    = eq Terminfo.Cyan
+  _White   = eq Terminfo.White
 #endif
+
+#ifdef USE_ANSI
+instance (Profunctor p, Functor f) => AsColor p f ANSI.Color where
+  _Color = iso sa bt where
+    bt Black   = ANSI.Black
+    bt Red     = ANSI.Red
+    bt Green   = ANSI.Green
+    bt Yellow  = ANSI.Yellow
+    bt Blue    = ANSI.Blue
+    bt Magenta = ANSI.Magenta
+    bt Cyan    = ANSI.Cyan
+    bt White   = ANSI.White
+    sa ANSI.Black   = Black
+    sa ANSI.Red     = Red
+    sa ANSI.Green   = Green
+    sa ANSI.Yellow  = Yellow
+    sa ANSI.Blue    = Blue
+    sa ANSI.Magenta = Magenta
+    sa ANSI.Cyan    = Cyan
+    sa ANSI.White   = White
+  _Black   = en ANSI.Black
+  _Red     = en ANSI.Red
+  _Green   = en ANSI.Green
+  _Yellow  = en ANSI.Yellow
+  _Blue    = en ANSI.Blue
+  _Magenta = en ANSI.Magenta
+  _Cyan    = en ANSI.Cyan
+  _White   = en ANSI.White
+#endif
+
