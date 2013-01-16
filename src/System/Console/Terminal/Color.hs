@@ -1,6 +1,8 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 -----------------------------------------------------------------------------
 -- |
@@ -22,6 +24,8 @@ module System.Console.Terminal.Color
 import Control.Applicative
 import Control.Lens
 import Data.Ix
+import Data.Data
+import GHC.Generics
 import System.Console.Terminal.Util
 
 #ifdef USE_TERMINFO
@@ -41,7 +45,7 @@ data Color
   | Magenta
   | Cyan
   | White
-  deriving (Eq,Ord,Show,Read,Ix,Enum,Bounded)
+  deriving (Eq,Ord,Show,Read,Ix,Enum,Bounded,Data,Typeable,Generic)
 
 makeClassy ''Color
 

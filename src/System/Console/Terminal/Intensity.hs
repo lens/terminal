@@ -1,6 +1,8 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE TemplateHaskell #-}
 -----------------------------------------------------------------------------
 -- |
@@ -21,7 +23,9 @@ module System.Console.Terminal.Intensity
 
 import Control.Applicative
 import Control.Lens
+import Data.Data
 import Data.Ix
+import GHC.Generics
 import System.Console.Terminal.Util
 
 #ifdef USE_ANSI
@@ -31,7 +35,7 @@ import qualified System.Console.ANSI as ANSI
 data Intensity
   = Dull
   | Vivid
-  deriving (Eq,Ord,Show,Read,Ix,Enum,Bounded)
+  deriving (Eq,Ord,Show,Read,Ix,Enum,Bounded,Data,Typeable,Generic)
 
 makeClassy ''Intensity
 

@@ -39,15 +39,18 @@ source-repository head
 
 library
   build-depends:
-    base >= 4.4 && < 5,
-    lens >= 3.8
+    base         >= 4.4 && < 5,
+    ghc-prim,
+    lens         >= 3.8,
+    mtl          >= 2     && < 2.2,
+    transformers >= 0.2.2 && < 0.4
 
-  if os(windows)
-    build-depends: Win32 >=2.0
-    cpp-options: -DWIN32
-  else
-    build-depends: unix >=2.0 && < 2.7
-    cpp-options: -DUNIX
+--  if os(windows)
+--    build-depends: Win32 >=2.0
+--    cpp-options: -DWIN32
+--  else
+--    build-depends: unix >=2.0 && < 2.7
+--    cpp-options: -DUNIX
 
   if flag(terminfo)
     cpp-options: -DUSE_TERMINFO
@@ -60,6 +63,8 @@ library
   hs-source-dirs: src
   exposed-modules:
     System.Console.Terminal
+    System.Console.Terminal.Bell
+    System.Console.Terminal.Class
     System.Console.Terminal.Color
     System.Console.Terminal.Color.Intense
     System.Console.Terminal.Intensity
