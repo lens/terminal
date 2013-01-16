@@ -1,7 +1,7 @@
-foo
+terminal
 ===
 
-[![Build Status](https://secure.travis-ci.org/ekmett/foo.png?branch=master)](http://travis-ci.org/ekmett/foo)
+[![Build Status](https://secure.travis-ci.org/ekmett/terminal.png?branch=master)](http://travis-ci.org/ekmett/terminal)
 
 Contact Information
 -------------------
