@@ -1,6 +1,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TemplateHaskell #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  System.Console.Terminal.Intensity
@@ -15,6 +16,7 @@
 module System.Console.Terminal.Intensity
   ( Intensity(..)
   , AsIntensity(..)
+  , HasIntensity(..)
   ) where
 
 import Control.Applicative
@@ -30,6 +32,8 @@ data Intensity
   = Dull
   | Vivid
   deriving (Eq,Ord,Show,Read,Ix,Enum,Bounded)
+
+makeClassy ''Intensity
 
 class AsIntensity p f t where
   -- |
@@ -62,4 +66,8 @@ instance (Profunctor p, Functor f) => AsIntensity p f ANSI.ColorIntensity where
     sa ANSI.Vivid = Vivid
   _Dull  = en ANSI.Dull
   _Vivid = en ANSI.Vivid
+
+instance HasIntensity ANSI.ColorIntensity where
+  intensity = _Intensity
+
 #endif

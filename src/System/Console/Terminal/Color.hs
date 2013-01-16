@@ -1,4 +1,5 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 -----------------------------------------------------------------------------
@@ -15,6 +16,7 @@
 module System.Console.Terminal.Color
   ( Color(..)
   , AsColor(..)
+  , HasColor(..)
   ) where
 
 import Control.Applicative
@@ -40,6 +42,8 @@ data Color
   | Cyan
   | White
   deriving (Eq,Ord,Show,Read,Ix,Enum,Bounded)
+
+makeClassy ''Color
 
 class AsColor p f t where
   -- |
@@ -127,5 +131,8 @@ instance (Profunctor p, Functor f) => AsColor p f ANSI.Color where
   _Magenta = en ANSI.Magenta
   _Cyan    = en ANSI.Cyan
   _White   = en ANSI.White
+
+instance HasColor ANSI.Color where
+  color = _Color
 #endif
 

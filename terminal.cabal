@@ -61,7 +61,9 @@ library
   exposed-modules:
     System.Console.Terminal
     System.Console.Terminal.Color
+    System.Console.Terminal.Color.Intense
     System.Console.Terminal.Intensity
+    System.Console.Terminal.Style
   other-modules:
     System.Console.Terminal.Util
 
