@@ -52,8 +52,8 @@ class AsIntensity p f t where
   -- @
   _Dull, _Vivid :: (Choice p, Applicative f) => Optic' p f t ()
 
-  _Dull    = _Intensity.eq Dull
-  _Vivid   = _Intensity.eq Vivid
+  _Dull    = _Intensity.only Dull
+  _Vivid   = _Intensity.only Vivid
 
 instance AsIntensity p f Intensity where
   _Intensity = id

@@ -63,14 +63,14 @@ class AsColor p f t where
   -- @
   _Black, _Red, _Green, _Yellow, _Blue, _Magenta, _Cyan, _White :: (Choice p, Applicative f) => Optic' p f t ()
 
-  _Black   = _Color.eq Black
-  _Red     = _Color.eq Red
-  _Green   = _Color.eq Green
-  _Yellow  = _Color.eq Yellow
-  _Blue    = _Color.eq Blue
-  _Magenta = _Color.eq Magenta
-  _Cyan    = _Color.eq Cyan
-  _White   = _Color.eq White
+  _Black   = _Color.only Black
+  _Red     = _Color.only Red
+  _Green   = _Color.only Green
+  _Yellow  = _Color.only Yellow
+  _Blue    = _Color.only Blue
+  _Magenta = _Color.only Magenta
+  _Cyan    = _Color.only Cyan
+  _White   = _Color.only White
 
 instance AsColor p f Color where
   _Color = id
@@ -95,14 +95,14 @@ instance (Choice p, Applicative f) => AsColor p f Terminfo.Color where
     seta Terminfo.Cyan          = Just Cyan
     seta Terminfo.White         = Just White
     seta Terminfo.ColorNumber{} = Nothing
-  _Black   = eq Terminfo.Black
-  _Red     = eq Terminfo.Red
-  _Green   = eq Terminfo.Green
-  _Yellow  = eq Terminfo.Yellow
-  _Blue    = eq Terminfo.Blue
-  _Magenta = eq Terminfo.Magenta
-  _Cyan    = eq Terminfo.Cyan
-  _White   = eq Terminfo.White
+  _Black   = only Terminfo.Black
+  _Red     = only Terminfo.Red
+  _Green   = only Terminfo.Green
+  _Yellow  = only Terminfo.Yellow
+  _Blue    = only Terminfo.Blue
+  _Magenta = only Terminfo.Magenta
+  _Cyan    = only Terminfo.Cyan
+  _White   = only Terminfo.White
 #endif
 
 instance (Profunctor p, Functor f) => AsColor p f ANSI.Color where
