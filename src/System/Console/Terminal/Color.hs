@@ -53,7 +53,7 @@ class AsColor p f t where
   -- '_Color' :: 'Iso''      'ANSI.Color' 'Color'
   -- '_Color' :: 'Prism''    'Terminfo.Color' 'Color'
   -- @
-  _Color :: Overloaded' p f t Color
+  _Color :: Optic' p f t Color
 
   -- |
   -- @
@@ -61,7 +61,7 @@ class AsColor p f t where
   -- '_Red'   :: 'Prism'' 'Color' ()
   -- ...
   -- @
-  _Black, _Red, _Green, _Yellow, _Blue, _Magenta, _Cyan, _White :: (Choice p, Applicative f) => Overloaded' p f t ()
+  _Black, _Red, _Green, _Yellow, _Blue, _Magenta, _Cyan, _White :: (Choice p, Applicative f) => Optic' p f t ()
 
   _Black   = _Color.eq Black
   _Red     = _Color.eq Red
