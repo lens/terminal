@@ -42,7 +42,7 @@ library
     base         >= 4.4 && < 5,
     data-default >= 0.4 && < 0.5,
     ghc-prim,
-    lens         >= 3.8,
+    lens         >= 4,
     mtl          >= 2     && < 2.2,
     transformers >= 0.2.2 && < 0.4
 
