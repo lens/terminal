@@ -18,8 +18,8 @@ module System.Console.Terminal.Util
   ( en
   ) where
 
+import Data.Function
 import Control.Lens
 
 en :: Enum a => a -> Prism' a ()
-en a = prism' (const a) $ \b -> if fromEnum a == fromEnum b then Just () else Nothing
-
+en a = nearly a (((==) `on` fromEnum) a)
