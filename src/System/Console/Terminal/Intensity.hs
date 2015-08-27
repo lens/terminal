@@ -42,7 +42,7 @@ class AsIntensity p f t where
   -- '_Intensity' :: 'Equality'' 'Intensity' 'Intensity'
   -- '_Intensity' :: 'Iso''      'ANSI.ColorIntensity' 'Intensity'
   -- @
-  _Intensity :: Overloaded' p f t Intensity
+  _Intensity :: Optic' p f t Intensity
 
   -- |
   -- @
@@ -50,10 +50,10 @@ class AsIntensity p f t where
   -- '_Vivid' :: 'Prism'' 'Intensity' ()
   -- ...
   -- @
-  _Dull, _Vivid :: (Choice p, Applicative f) => Overloaded' p f t ()
+  _Dull, _Vivid :: (Choice p, Applicative f) => Optic' p f t ()
 
-  _Dull    = _Intensity.eq Dull
-  _Vivid   = _Intensity.eq Vivid
+  _Dull    = _Intensity.only Dull
+  _Vivid   = _Intensity.only Vivid
 
 instance AsIntensity p f Intensity where
   _Intensity = id
